@@ -43,6 +43,7 @@ Thumbs.db
 
 # Vim temporary files
 .*.swp
+build*
 
 # Visual Studio generated files
 *.ib_pdb_index
