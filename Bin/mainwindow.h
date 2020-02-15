@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QAction>
+#include <QFileSystemModel>
 #include <QListView>
 #include <QMainWindow>
 #include <QMenu>
@@ -17,6 +18,7 @@ public:
     MainWindow(QWidget* parent = nullptr);
 
 private:
+    QFileSystemModel* model;
     QAction* bar;
     QAction* table;
     QMenu* contextMenu;
@@ -24,7 +26,12 @@ private:
     QToolBar* leftBar;
     QVector<QModelIndex> past;
     QPushButton* back;
+    QTreeView* leftTree;
     QTreeView* mainTree;
+
+    void createTopBar();
+    void createLeftBar();
+    void createContextMenu();
 private slots:
     void changedList(const QModelIndex& index);
     void pressBack();
