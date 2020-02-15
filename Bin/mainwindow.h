@@ -28,6 +28,7 @@ private:
     QPushButton* back;
     QTreeView* leftTree;
     QTreeView* mainTree;
+    QListView* mainList;
 
     void createTopBar();
     void createLeftBar();
@@ -36,5 +37,7 @@ private slots:
     void changedList(const QModelIndex& index);
     void pressBack();
     void viewMenu();
+    void pressBar(bool checked);
+    void pressTable(bool checked);
 };
 #endif // MAINWINDOW_H

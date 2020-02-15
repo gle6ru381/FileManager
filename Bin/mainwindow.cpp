@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include <QCoreApplication>
 #include <QString>
+#include <QTableView>
 
 #define MAINPATH "D:/reposQt/FileManager"
 
@@ -17,6 +18,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent)
     leftTree->hideColumn(1);
     leftTree->hideColumn(2);
     leftTree->hideColumn(3);
+    leftTree->setHeaderHidden(true);
 
     mainTree = new QTreeView(this);
     mainTree->setModel(model);
@@ -28,11 +30,23 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent)
             this,
             SLOT(changedList(const QModelIndex&)));
 
+    mainList = new QListView(this);
+    mainList->setModel(model);
+    mainList->setRootIndex(past.first());
+    mainList->setViewMode(QListView::IconMode);
+    // mainList->setLayoutMode(QListView::Batched);
+    mainList->setGridSize(QSize(100, 100));
+    connect(mainList,
+            SIGNAL(doubleClicked(const QModelIndex&)),
+            this,
+            SLOT(changedList(const QModelIndex&)));
+    mainList->setContextMenuPolicy(Qt::CustomContextMenu);
+
     createTopBar();
     createLeftBar();
     createContextMenu();
 
-    setCentralWidget(mainTree);
+    setCentralWidget(mainList);
     setGeometry(0, 30, 800, 800);
 }
 
@@ -41,6 +55,7 @@ void MainWindow::changedList(const QModelIndex& index)
     back->setEnabled(true);
     past.push_back(index);
     mainTree->setRootIndex(index);
+    mainList->setRootIndex(index);
 }
 
 void MainWindow::pressBack()
@@ -79,7 +94,7 @@ void MainWindow::createLeftBar()
     leftBar = new QToolBar(this);
     leftBar->setOrientation(Qt::Vertical);
     leftBar->setAllowedAreas(Qt::LeftToolBarArea);
-    leftBar->setMaximumSize(150, 500);
+    leftBar->setMaximumSize(180, 500);
     leftBar->addWidget(leftTree);
     leftBar->setMovable(false);
     leftBar->setFloatable(false);
@@ -90,6 +105,8 @@ void MainWindow::createContextMenu()
 {
     bar = new QAction(tr("bar"));
     table = new QAction(tr("table"));
+    connect(bar, SIGNAL(triggered(bool)), this, SLOT(pressBar(bool)));
+    connect(table, SIGNAL(triggered(bool)), this, SLOT(pressTable(bool)));
 
     contextMenu = new QMenu(this);
     QMenu* view = new QMenu(tr("view"));
@@ -100,4 +117,21 @@ void MainWindow::createContextMenu()
             SIGNAL(customContextMenuRequested(const QPoint&)),
             this,
             SLOT(viewMenu()));
+    connect(mainList,
+            SIGNAL(customContextMenuRequested(const QPoint&)),
+            this,
+            SLOT(viewMenu()));
+}
+
+void MainWindow::pressBar(bool checked)
+{
+    setCentralWidget(mainList);
+}
+
+void MainWindow::pressTable(bool checked)
+{
+    mainTree = new QTreeView;
+    mainTree->setModel(model);
+    mainTree->setRootIndex(past.last());
+    setCentralWidget(mainTree);
 }
