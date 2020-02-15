@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include <QComboBox>
 #include <QCoreApplication>
 #include <QFileSystemModel>
 #include <QString>
@@ -44,10 +45,24 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent)
     mainTree->setModel(model);
     mainTree->setRootIndex(past.first());
     mainTree->setTreePosition(5);
+    mainTree->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(mainTree,
             SIGNAL(doubleClicked(const QModelIndex&)),
             this,
             SLOT(changedList(const QModelIndex&)));
+
+    bar = new QAction(tr("bar"));
+    table = new QAction(tr("table"));
+
+    contextMenu = new QMenu(this);
+    QMenu* view = new QMenu(tr("view"));
+    view->addAction(bar);
+    view->addAction(table);
+    contextMenu->addMenu(view);
+    connect(mainTree,
+            SIGNAL(customContextMenuRequested(const QPoint&)),
+            this,
+            SLOT(viewMenu()));
 
     setCentralWidget(mainTree);
     setGeometry(0, 30, 800, 800);
@@ -69,4 +84,9 @@ void MainWindow::pressBack()
             back->setEnabled(false);
     } else
         back->setEnabled(false);
+}
+
+void MainWindow::viewMenu()
+{
+    contextMenu->exec(QCursor::pos());
 }
