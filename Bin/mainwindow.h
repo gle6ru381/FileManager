@@ -35,6 +35,7 @@ private:
     void fileRun(QString);
 private slots:
     void changedList(const QModelIndex& index);
+    void changedTree(const QModelIndex& index);
     void pressBack();
     void viewMenu();
     void pressBar();

@@ -21,6 +21,10 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent)
     leftTree->hideColumn(2);
     leftTree->hideColumn(3);
     leftTree->setHeaderHidden(true);
+    connect(leftTree,
+            SIGNAL(clicked(const QModelIndex&)),
+            this,
+            SLOT(changedTree(const QModelIndex&)));
 
     mainList = new QListView(this);
     mainList->setModel(model);
@@ -33,6 +37,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent)
     mainList->setResizeMode(QListView::Adjust);
     mainList->setIconSize(QSize(80, 80));
     mainList->setEditTriggers(QAbstractItemView::SelectedClicked);
+    mainList->setSelectionMode(QAbstractItemView::ExtendedSelection);
     connect(mainList,
             SIGNAL(doubleClicked(const QModelIndex&)),
             this,
@@ -139,4 +144,10 @@ void MainWindow::fileRun(QString filePath)
         process->start(QString("notepad %1").arg(filePath));
     else if (extension == "exe")
         process->startDetached(filePath);
+}
+
+void MainWindow::changedTree(const QModelIndex& index)
+{
+    if (model->isDir(index))
+        changedList(index);
 }
