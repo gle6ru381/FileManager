@@ -179,14 +179,12 @@ void MainWindow::pressHome()
 
 void MainWindow::pressCopy()
 {
-    copyDir = new QDir(model->filePath(mainList->currentIndex()));
+    copyDir = new MyDir(model->filePath(mainList->currentIndex()));
 }
 
 void MainWindow::pressCut()
 {
-    copyFile(
-            QString(copyDir->path()),
-            QString(model->filePath(mainList->rootIndex())));
+    copyDir->copyInDir(QString(model->filePath(mainList->rootIndex())));
 }
 
 void MainWindow::copyFile(const QString& source, QString&& destination)

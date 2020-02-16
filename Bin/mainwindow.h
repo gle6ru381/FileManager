@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "mydir.h"
 #include <QAction>
 #include <QDir>
 #include <QFileSystemModel>
@@ -31,7 +32,7 @@ private:
     QPushButton* home;
     QTreeView* leftTree;
     QListView* mainList;
-    QDir* copyDir;
+    MyDir* copyDir;
 
     void createTopBar();
     void createLeftBar();
