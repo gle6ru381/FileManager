@@ -97,15 +97,18 @@ void MainWindow::createTopBar()
     copy->setIcon(QIcon(QString("%1/pics/edit-copy.png").arg(MAINPATH)));
     copy->setIconSize(QSize(30, 30));
     topBar->addWidget(copy);
+    connect(copy, SIGNAL(released()), this, SLOT(pressCopy()));
 
     move = new QPushButton(topBar);
     move->setIcon(QIcon(QString("%1/pics/edit-cut.png").arg(MAINPATH)));
     move->setIconSize(QSize(30, 30));
     topBar->addWidget(move);
+    connect(move, SIGNAL(released()), this, SLOT(pressCut()));
 
     home = new QPushButton(topBar);
     home->setIcon(QIcon(QString("%1/pics/go-home.png").arg(MAINPATH)));
     home->setIconSize(QSize(30, 30));
+    connect(home, SIGNAL(released()), this, SLOT(pressHome()));
     topBar->addWidget(home);
 
     addToolBar(Qt::TopToolBarArea, topBar);
@@ -167,4 +170,42 @@ void MainWindow::changedTree(const QModelIndex& index)
 {
     if (model->isDir(index))
         changedList(index);
+}
+
+void MainWindow::pressHome()
+{
+    changedList(model->index(""));
+}
+
+void MainWindow::pressCopy()
+{
+    copyDir = new QDir(model->filePath(mainList->currentIndex()));
+}
+
+void MainWindow::pressCut()
+{
+    copyFile(
+            QString(copyDir->path()),
+            QString(model->filePath(mainList->rootIndex())));
+}
+
+void MainWindow::copyFile(const QString& source, QString&& destination)
+{
+    if (QFileInfo(source).isDir()) {
+        QString dirName(source.split("/").last());
+        destination += QDir::separator() + dirName;
+        QDir().mkdir(destination);
+        foreach (
+                const QString& entry,
+                QDir(source).entryList(
+                        QDir::AllDirs | QDir::Files | QDir::Hidden
+                        | QDir::NoDotAndDotDot))
+            QFile::copy(
+                    source + QDir::separator() + entry,
+                    destination + QDir::separator() + entry);
+    } else {
+        if (QFile::exists(destination)) {
+            QFile::copy(source, destination);
+        }
+    }
 }

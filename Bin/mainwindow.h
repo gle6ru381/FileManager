@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QAction>
+#include <QDir>
 #include <QFileSystemModel>
 #include <QListView>
 #include <QMainWindow>
@@ -9,7 +10,6 @@
 #include <QPushButton>
 #include <QToolBar>
 #include <QTreeView>
-#include <QVector>
 
 class MainWindow : public QMainWindow {
     Q_OBJECT
@@ -31,11 +31,13 @@ private:
     QPushButton* home;
     QTreeView* leftTree;
     QListView* mainList;
+    QDir* copyDir;
 
     void createTopBar();
     void createLeftBar();
     void createContextMenu();
     void fileRun(QString);
+    void copyFile(const QString&, QString&&);
 private slots:
     void changedList(const QModelIndex& index);
     void changedTree(const QModelIndex& index);
@@ -43,5 +45,8 @@ private slots:
     void viewMenu();
     void pressBar();
     void pressTable();
+    void pressHome();
+    void pressCopy();
+    void pressCut();
 };
 #endif // MAINWINDOW_H
