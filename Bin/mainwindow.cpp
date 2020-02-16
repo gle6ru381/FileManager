@@ -137,4 +137,6 @@ void MainWindow::fileRun(QString filePath)
     QString extension = filePath.split("/").last().split(".").last();
     if (extension == "txt" || extension == "log")
         process->start(QString("notepad %1").arg(filePath));
+    else if (extension == "exe")
+        process->startDetached(filePath);
 }
