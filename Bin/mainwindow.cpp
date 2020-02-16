@@ -28,7 +28,6 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent)
     mainList->setLayoutMode(QListView::Batched);
     // mainList->setGridSize(QSize(100, 100));
     mainList->setUniformItemSizes(true);
-    // mainList->setTextElideMode(Qt::ElideNone);
     mainList->setWordWrap(true);
     mainList->setResizeMode(QListView::Adjust);
     mainList->setIconSize(QSize(80, 80));
