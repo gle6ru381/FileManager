@@ -28,7 +28,7 @@ private:
     QModelIndexList past;
     QPushButton* back;
     QPushButton* copy;
-    QPushButton* move;
+    QPushButton* paste;
     QPushButton* home;
     QTreeView* leftTree;
     QListView* mainList;
@@ -38,7 +38,6 @@ private:
     void createLeftBar();
     void createContextMenu();
     void fileRun(QString);
-    void copyFile(const QString&, QString&&);
 private slots:
     void changedList(const QModelIndex& index);
     void changedTree(const QModelIndex& index);
@@ -48,6 +47,6 @@ private slots:
     void pressTable();
     void pressHome();
     void pressCopy();
-    void pressCut();
+    void pressPaste();
 };
 #endif // MAINWINDOW_H

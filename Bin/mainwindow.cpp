@@ -89,24 +89,28 @@ void MainWindow::createTopBar()
     back = new QPushButton(topBar);
     back->setEnabled(false);
     back->setIcon(QIcon(QString("%1/pics/go-previous.png").arg(MAINPATH)));
+    back->setText(tr("Назад"));
     back->setIconSize(QSize(30, 30));
     connect(back, SIGNAL(released()), this, SLOT(pressBack()));
     topBar->addWidget(back);
 
     copy = new QPushButton(topBar);
     copy->setIcon(QIcon(QString("%1/pics/edit-copy.png").arg(MAINPATH)));
+    copy->setText(tr("Копировать"));
     copy->setIconSize(QSize(30, 30));
     topBar->addWidget(copy);
     connect(copy, SIGNAL(released()), this, SLOT(pressCopy()));
 
-    move = new QPushButton(topBar);
-    move->setIcon(QIcon(QString("%1/pics/edit-cut.png").arg(MAINPATH)));
-    move->setIconSize(QSize(30, 30));
-    topBar->addWidget(move);
-    connect(move, SIGNAL(released()), this, SLOT(pressCut()));
+    paste = new QPushButton(topBar);
+    paste->setIcon(QIcon(QString("%1/pics/edit-paste.png").arg(MAINPATH)));
+    paste->setText(tr("Вставить"));
+    paste->setIconSize(QSize(30, 30));
+    topBar->addWidget(paste);
+    connect(paste, SIGNAL(released()), this, SLOT(pressPaste()));
 
     home = new QPushButton(topBar);
     home->setIcon(QIcon(QString("%1/pics/go-home.png").arg(MAINPATH)));
+    home->setText(tr("Домой"));
     home->setIconSize(QSize(30, 30));
     connect(home, SIGNAL(released()), this, SLOT(pressHome()));
     topBar->addWidget(home);
@@ -182,28 +186,7 @@ void MainWindow::pressCopy()
     copyDir = new MyDir(model->filePath(mainList->currentIndex()));
 }
 
-void MainWindow::pressCut()
+void MainWindow::pressPaste()
 {
     copyDir->copyInDir(QString(model->filePath(mainList->rootIndex())));
-}
-
-void MainWindow::copyFile(const QString& source, QString&& destination)
-{
-    if (QFileInfo(source).isDir()) {
-        QString dirName(source.split("/").last());
-        destination += QDir::separator() + dirName;
-        QDir().mkdir(destination);
-        foreach (
-                const QString& entry,
-                QDir(source).entryList(
-                        QDir::AllDirs | QDir::Files | QDir::Hidden
-                        | QDir::NoDotAndDotDot))
-            QFile::copy(
-                    source + QDir::separator() + entry,
-                    destination + QDir::separator() + entry);
-    } else {
-        if (QFile::exists(destination)) {
-            QFile::copy(source, destination);
-        }
-    }
 }

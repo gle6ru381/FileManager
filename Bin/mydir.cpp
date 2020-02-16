@@ -18,9 +18,8 @@ void MyDir::copyInDir(QString&& destination)
             QFile::copy(
                     path + QDir::separator() + entry,
                     destination + QDir::separator() + entry);
-    } else {
-        if (QFile::exists(destination)) {
-            QFile::copy(path, destination);
-        }
+    } else if (QFileInfo(path).isFile()) {
+        QString entry(path.split("/").last());
+        QFile::copy(path, destination + QDir::separator() + entry);
     }
 }
