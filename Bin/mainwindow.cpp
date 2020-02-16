@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include <QCoreApplication>
 #include <QFileIconProvider>
+#include <QProcess>
 #include <QString>
 #include <QTableView>
 
@@ -48,9 +49,13 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent)
 
 void MainWindow::changedList(const QModelIndex& index)
 {
-    back->setEnabled(true);
-    past.push_back(index);
-    mainList->setRootIndex(index);
+    if (model->isDir(index)) {
+        back->setEnabled(true);
+        past.push_back(index);
+        mainList->setRootIndex(index);
+    } else {
+        fileRun(model->filePath(index));
+    }
 }
 
 void MainWindow::pressBack()
@@ -124,4 +129,12 @@ void MainWindow::pressTable()
 {
     mainList->setIconSize(QSize(25, 25));
     mainList->setViewMode(QListView::ListMode);
+}
+
+void MainWindow::fileRun(QString filePath)
+{
+    QProcess* process = new QProcess(this);
+    QString extension = filePath.split("/").last().split(".").last();
+    if (extension == "txt" || extension == "log")
+        process->start(QString("notepad %1").arg(filePath));
 }

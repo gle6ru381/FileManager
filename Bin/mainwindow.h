@@ -32,6 +32,7 @@ private:
     void createTopBar();
     void createLeftBar();
     void createContextMenu();
+    void fileRun(QString);
 private slots:
     void changedList(const QModelIndex& index);
     void pressBack();
