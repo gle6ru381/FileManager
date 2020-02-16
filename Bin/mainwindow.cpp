@@ -20,22 +20,13 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent)
     leftTree->hideColumn(3);
     leftTree->setHeaderHidden(true);
 
-    mainTree = new QTreeView(this);
-    mainTree->setModel(model);
-    mainTree->setRootIndex(past.first());
-    mainTree->setTreePosition(5);
-    mainTree->setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(mainTree,
-            SIGNAL(doubleClicked(const QModelIndex&)),
-            this,
-            SLOT(changedList(const QModelIndex&)));
-
     mainList = new QListView(this);
     mainList->setModel(model);
     mainList->setRootIndex(past.first());
     mainList->setViewMode(QListView::IconMode);
-    // mainList->setLayoutMode(QListView::Batched);
+    mainList->setLayoutMode(QListView::Batched);
     mainList->setGridSize(QSize(100, 100));
+    mainList->setResizeMode(QListView::Adjust);
     connect(mainList,
             SIGNAL(doubleClicked(const QModelIndex&)),
             this,
@@ -54,7 +45,6 @@ void MainWindow::changedList(const QModelIndex& index)
 {
     back->setEnabled(true);
     past.push_back(index);
-    mainTree->setRootIndex(index);
     mainList->setRootIndex(index);
 }
 
@@ -62,7 +52,7 @@ void MainWindow::pressBack()
 {
     if (past.begin() != past.end() - 1) {
         past.removeLast();
-        mainTree->setRootIndex(past.last());
+        mainList->setRootIndex(past.last());
         if (past.first() == past.last())
             back->setEnabled(false);
     } else
@@ -105,33 +95,27 @@ void MainWindow::createContextMenu()
 {
     bar = new QAction(tr("bar"));
     table = new QAction(tr("table"));
-    connect(bar, SIGNAL(triggered(bool)), this, SLOT(pressBar(bool)));
-    connect(table, SIGNAL(triggered(bool)), this, SLOT(pressTable(bool)));
+    connect(bar, SIGNAL(triggered(bool)), this, SLOT(pressBar()));
+    connect(table, SIGNAL(triggered(bool)), this, SLOT(pressTable()));
 
     contextMenu = new QMenu(this);
     QMenu* view = new QMenu(tr("view"));
     view->addAction(bar);
     view->addAction(table);
     contextMenu->addMenu(view);
-    connect(mainTree,
-            SIGNAL(customContextMenuRequested(const QPoint&)),
-            this,
-            SLOT(viewMenu()));
     connect(mainList,
             SIGNAL(customContextMenuRequested(const QPoint&)),
             this,
             SLOT(viewMenu()));
 }
 
-void MainWindow::pressBar(bool checked)
+void MainWindow::pressBar()
 {
-    setCentralWidget(mainList);
+    mainList->setViewMode(QListView::IconMode);
 }
 
-void MainWindow::pressTable(bool checked)
+void MainWindow::pressTable()
 {
-    mainTree = new QTreeView;
-    mainTree->setModel(model);
-    mainTree->setRootIndex(past.last());
-    setCentralWidget(mainTree);
+    mainList->setGridSize(QSize(100, 20));
+    mainList->setViewMode(QListView::ListMode);
 }
