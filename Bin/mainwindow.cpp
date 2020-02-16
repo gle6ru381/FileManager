@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include <QCoreApplication>
+#include <QFileIconProvider>
 #include <QString>
 #include <QTableView>
 
@@ -25,8 +26,13 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent)
     mainList->setRootIndex(past.first());
     mainList->setViewMode(QListView::IconMode);
     mainList->setLayoutMode(QListView::Batched);
-    mainList->setGridSize(QSize(100, 100));
+    // mainList->setGridSize(QSize(100, 100));
+    mainList->setUniformItemSizes(true);
+    // mainList->setTextElideMode(Qt::ElideNone);
+    mainList->setWordWrap(true);
     mainList->setResizeMode(QListView::Adjust);
+    mainList->setIconSize(QSize(80, 80));
+    mainList->setEditTriggers(QAbstractItemView::SelectedClicked);
     connect(mainList,
             SIGNAL(doubleClicked(const QModelIndex&)),
             this,
@@ -111,11 +117,12 @@ void MainWindow::createContextMenu()
 
 void MainWindow::pressBar()
 {
+    mainList->setIconSize(QSize(80, 80));
     mainList->setViewMode(QListView::IconMode);
 }
 
 void MainWindow::pressTable()
 {
-    mainList->setGridSize(QSize(100, 20));
+    mainList->setIconSize(QSize(25, 25));
     mainList->setViewMode(QListView::ListMode);
 }

@@ -24,7 +24,7 @@ private:
     QMenu* contextMenu;
     QToolBar* topBar;
     QToolBar* leftBar;
-    QVector<QModelIndex> past;
+    QModelIndexList past;
     QPushButton* back;
     QTreeView* leftTree;
     QListView* mainList;
