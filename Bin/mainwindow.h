@@ -26,6 +26,9 @@ private:
     QToolBar* leftBar;
     QModelIndexList past;
     QPushButton* back;
+    QPushButton* copy;
+    QPushButton* move;
+    QPushButton* home;
     QTreeView* leftTree;
     QListView* mainList;
 

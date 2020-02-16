@@ -35,7 +35,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent)
     mainList->setUniformItemSizes(true);
     mainList->setWordWrap(true);
     mainList->setResizeMode(QListView::Adjust);
-    mainList->setIconSize(QSize(80, 80));
+    mainList->setIconSize(QSize(80, 70));
     mainList->setEditTriggers(QAbstractItemView::SelectedClicked);
     mainList->setSelectionMode(QAbstractItemView::ExtendedSelection);
     connect(mainList,
@@ -85,12 +85,29 @@ void MainWindow::createTopBar()
     topBar->setAllowedAreas(Qt::TopToolBarArea);
     topBar->setMovable(false);
     topBar->setFloatable(false);
+
     back = new QPushButton(topBar);
     back->setEnabled(false);
     back->setIcon(QIcon(QString("%1/pics/go-previous.png").arg(MAINPATH)));
-    back->setIconSize(QSize(40, 40));
+    back->setIconSize(QSize(30, 30));
     connect(back, SIGNAL(released()), this, SLOT(pressBack()));
     topBar->addWidget(back);
+
+    copy = new QPushButton(topBar);
+    copy->setIcon(QIcon(QString("%1/pics/edit-copy.png").arg(MAINPATH)));
+    copy->setIconSize(QSize(30, 30));
+    topBar->addWidget(copy);
+
+    move = new QPushButton(topBar);
+    move->setIcon(QIcon(QString("%1/pics/edit-cut.png").arg(MAINPATH)));
+    move->setIconSize(QSize(30, 30));
+    topBar->addWidget(move);
+
+    home = new QPushButton(topBar);
+    home->setIcon(QIcon(QString("%1/pics/go-home.png").arg(MAINPATH)));
+    home->setIconSize(QSize(30, 30));
+    topBar->addWidget(home);
+
     addToolBar(Qt::TopToolBarArea, topBar);
 }
 
@@ -108,13 +125,13 @@ void MainWindow::createLeftBar()
 
 void MainWindow::createContextMenu()
 {
-    bar = new QAction(tr("bar"));
-    table = new QAction(tr("table"));
+    bar = new QAction(tr("Плитка"));
+    table = new QAction(tr("Таблица"));
     connect(bar, SIGNAL(triggered(bool)), this, SLOT(pressBar()));
     connect(table, SIGNAL(triggered(bool)), this, SLOT(pressTable()));
 
     contextMenu = new QMenu(this);
-    QMenu* view = new QMenu(tr("view"));
+    QMenu* view = new QMenu(tr("Вид"));
     view->addAction(bar);
     view->addAction(table);
     contextMenu->addMenu(view);
@@ -126,7 +143,7 @@ void MainWindow::createContextMenu()
 
 void MainWindow::pressBar()
 {
-    mainList->setIconSize(QSize(80, 80));
+    mainList->setIconSize(QSize(80, 70));
     mainList->setViewMode(QListView::IconMode);
 }
 
