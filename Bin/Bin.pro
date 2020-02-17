@@ -18,10 +18,12 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
+    mylistview.cpp \
     mypath.cpp
 
 HEADERS += \
     mainwindow.h \
+    mylistview.h \
     mypath.h
 
 # Default rules for deployment.

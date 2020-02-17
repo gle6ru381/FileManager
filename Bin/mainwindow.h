@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "mylistview.h"
 #include "mypath.h"
 #include <QAction>
 #include <QDir>
@@ -32,8 +33,8 @@ private:
     QPushButton* home;
     QPushButton* cut;
     QTreeView* leftTree;
-    QListView* mainList;
-    MyPath* copyDir;
+    MyListView* mainList;
+    MyPath* selectedPaths;
 
     void createTopBar();
     void createLeftBar();

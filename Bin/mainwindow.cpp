@@ -41,7 +41,7 @@ void MainWindow::createLeftTree()
 
 void MainWindow::createMainList()
 {
-    mainList = new QListView(this);
+    mainList = new MyListView(this);
     mainList->setModel(model);
     mainList->setRootIndex(past.first());
     mainList->setViewMode(QListView::IconMode);
@@ -196,12 +196,16 @@ void MainWindow::pressHome()
 
 void MainWindow::pressCopy()
 {
-    copyDir = new MyPath(model->filePath(mainList->currentIndex()));
+    QModelIndexList temp = mainList->getSelectedIndexes();
+    selectedPaths = new MyPath;
+    selectedPaths->clearPaths();
+    foreach (QModelIndex path, temp)
+        selectedPaths->pushBack(model->filePath(path));
 }
 
 void MainWindow::pressPaste()
 {
-    copyDir->copyInDir(QString(model->filePath(mainList->rootIndex())));
+    selectedPaths->copyInDir(QString(model->filePath(mainList->rootIndex())));
 }
 
 void MainWindow::pressCut()
