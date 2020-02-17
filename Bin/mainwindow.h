@@ -1,7 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "mydir.h"
+#include "mypath.h"
 #include <QAction>
 #include <QDir>
 #include <QFileSystemModel>
@@ -30,14 +30,18 @@ private:
     QPushButton* copy;
     QPushButton* paste;
     QPushButton* home;
+    QPushButton* cut;
     QTreeView* leftTree;
     QListView* mainList;
-    MyDir* copyDir;
+    MyPath* copyDir;
 
     void createTopBar();
     void createLeftBar();
+    void createLeftTree();
+    void createMainList();
     void createContextMenu();
     void fileRun(QString);
+
 private slots:
     void changedList(const QModelIndex& index);
     void changedTree(const QModelIndex& index);
@@ -48,5 +52,6 @@ private slots:
     void pressHome();
     void pressCopy();
     void pressPaste();
+    void pressCut();
 };
 #endif // MAINWINDOW_H

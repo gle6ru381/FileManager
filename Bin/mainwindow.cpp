@@ -14,6 +14,18 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent)
     model->setReadOnly(false);
     past.push_back(model->index(""));
 
+    createLeftTree();
+    createMainList();
+    createTopBar();
+    createLeftBar();
+    createContextMenu();
+
+    setCentralWidget(mainList);
+    setGeometry(0, 30, 800, 800);
+}
+
+void MainWindow::createLeftTree()
+{
     leftTree = new QTreeView(this);
     leftTree->setModel(model);
     leftTree->setRootIndex(past.first());
@@ -25,13 +37,15 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent)
             SIGNAL(clicked(const QModelIndex&)),
             this,
             SLOT(changedTree(const QModelIndex&)));
+}
 
+void MainWindow::createMainList()
+{
     mainList = new QListView(this);
     mainList->setModel(model);
     mainList->setRootIndex(past.first());
     mainList->setViewMode(QListView::IconMode);
     mainList->setLayoutMode(QListView::Batched);
-    // mainList->setGridSize(QSize(100, 100));
     mainList->setUniformItemSizes(true);
     mainList->setWordWrap(true);
     mainList->setResizeMode(QListView::Adjust);
@@ -43,13 +57,6 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent)
             this,
             SLOT(changedList(const QModelIndex&)));
     mainList->setContextMenuPolicy(Qt::CustomContextMenu);
-
-    createTopBar();
-    createLeftBar();
-    createContextMenu();
-
-    setCentralWidget(mainList);
-    setGeometry(0, 30, 800, 800);
 }
 
 void MainWindow::changedList(const QModelIndex& index)
@@ -100,6 +107,12 @@ void MainWindow::createTopBar()
     copy->setIconSize(QSize(30, 30));
     topBar->addWidget(copy);
     connect(copy, SIGNAL(released()), this, SLOT(pressCopy()));
+
+    cut = new QPushButton(topBar);
+    cut->setIcon(QIcon(QString("%1/pics/edit-cut.png").arg(MAINPATH)));
+    cut->setText(tr("Вырезать"));
+    cut->setIconSize(QSize(30, 30));
+    topBar->addWidget(cut);
 
     paste = new QPushButton(topBar);
     paste->setIcon(QIcon(QString("%1/pics/edit-paste.png").arg(MAINPATH)));
@@ -183,10 +196,14 @@ void MainWindow::pressHome()
 
 void MainWindow::pressCopy()
 {
-    copyDir = new MyDir(model->filePath(mainList->currentIndex()));
+    copyDir = new MyPath(model->filePath(mainList->currentIndex()));
 }
 
 void MainWindow::pressPaste()
 {
     copyDir->copyInDir(QString(model->filePath(mainList->rootIndex())));
+}
+
+void MainWindow::pressCut()
+{
 }

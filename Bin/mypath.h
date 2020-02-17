@@ -4,12 +4,12 @@
 #include <QDir>
 #include <QFileSystemModel>
 
-class MyDir : public QDir {
+class MyPath : public QDir {
 private:
     QString path;
 
 public:
-    MyDir(const QString& path = QString());
+    MyPath(const QString& path = QString());
     void copyInDir(QString&& destination);
     void moveInDir(QString&& destination);
 };

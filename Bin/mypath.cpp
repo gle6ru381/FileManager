@@ -1,10 +1,10 @@
-#include "mydir.h"
+#include "mypath.h"
 
-MyDir::MyDir(const QString& Path) : QDir(Path), path(Path)
+MyPath::MyPath(const QString& Path) : QDir(Path), path(Path)
 {
 }
 
-void MyDir::copyInDir(QString&& destination)
+void MyPath::copyInDir(QString&& destination)
 {
     if (QFileInfo(path).isDir()) {
         QString dirName(path.split("/").last());
