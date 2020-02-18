@@ -96,28 +96,28 @@ void MainWindow::createTopBar()
     back = new QPushButton(topBar);
     back->setEnabled(false);
     back->setIcon(QIcon(QString("%1/pics/go-previous.png").arg(MAINPATH)));
-    back->setText(tr("Назад"));
+    back->setToolTip("Назад");
     back->setIconSize(QSize(30, 30));
     connect(back, SIGNAL(released()), this, SLOT(pressBack()));
     topBar->addWidget(back);
 
     copy = new QPushButton(topBar);
     copy->setIcon(QIcon(QString("%1/pics/edit-copy.png").arg(MAINPATH)));
-    copy->setText(tr("Копировать"));
+    copy->setToolTip(tr("Копировать"));
     copy->setIconSize(QSize(30, 30));
     topBar->addWidget(copy);
     connect(copy, SIGNAL(released()), this, SLOT(pressCopy()));
 
     cut = new QPushButton(topBar);
     cut->setIcon(QIcon(QString("%1/pics/edit-cut.png").arg(MAINPATH)));
-    cut->setText(tr("Вырезать"));
+    cut->setToolTip(tr("Вырезать"));
     cut->setIconSize(QSize(30, 30));
     topBar->addWidget(cut);
     connect(cut, SIGNAL(released()), this, SLOT(pressCut()));
 
     paste = new QPushButton(topBar);
     paste->setIcon(QIcon(QString("%1/pics/edit-paste.png").arg(MAINPATH)));
-    paste->setText(tr("Вставить"));
+    paste->setToolTip(tr("Вставить"));
     paste->setIconSize(QSize(30, 30));
     paste->setEnabled(false);
     topBar->addWidget(paste);
@@ -125,7 +125,7 @@ void MainWindow::createTopBar()
 
     home = new QPushButton(topBar);
     home->setIcon(QIcon(QString("%1/pics/go-home.png").arg(MAINPATH)));
-    home->setText(tr("Домой"));
+    home->setToolTip(tr("Домой"));
     home->setIconSize(QSize(30, 30));
     connect(home, SIGNAL(released()), this, SLOT(pressHome()));
     topBar->addWidget(home);
