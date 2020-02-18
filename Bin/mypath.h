@@ -9,6 +9,7 @@ private:
     QStringList paths;
 
 public:
+    enum TypeMove { Move = 0, Copy };
     MyPath(const QString& path = QString());
     void copyInDir(QString&& destination);
     void moveInDir(QString&& destination);

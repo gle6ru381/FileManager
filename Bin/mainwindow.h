@@ -35,6 +35,7 @@ private:
     QTreeView* leftTree;
     MyListView* mainList;
     MyPath* selectedPaths;
+    MyPath::TypeMove type;
 
     void createTopBar();
     void createLeftBar();

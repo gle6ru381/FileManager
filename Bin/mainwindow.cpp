@@ -119,6 +119,7 @@ void MainWindow::createTopBar()
     paste->setIcon(QIcon(QString("%1/pics/edit-paste.png").arg(MAINPATH)));
     paste->setText(tr("Вставить"));
     paste->setIconSize(QSize(30, 30));
+    paste->setEnabled(false);
     topBar->addWidget(paste);
     connect(paste, SIGNAL(released()), this, SLOT(pressPaste()));
 
@@ -197,23 +198,37 @@ void MainWindow::pressHome()
 
 void MainWindow::pressCopy()
 {
-    QModelIndexList temp = mainList->getSelectedIndexes();
-    selectedPaths = new MyPath;
-    selectedPaths->clearPaths();
-    foreach (QModelIndex path, temp)
-        selectedPaths->pushBack(model->filePath(path));
+    if (!mainList->getSelectedIndexes().isEmpty()) {
+        paste->setEnabled(true);
+        type = MyPath::Copy;
+        QModelIndexList temp = mainList->getSelectedIndexes();
+        selectedPaths = new MyPath;
+        selectedPaths->clearPaths();
+        foreach (QModelIndex path, temp)
+            selectedPaths->pushBack(model->filePath(path));
+    }
 }
 
 void MainWindow::pressPaste()
 {
-    selectedPaths->moveInDir(QString(model->filePath(mainList->rootIndex())));
+    if (type == MyPath::Move) {
+        selectedPaths->moveInDir(
+                QString(model->filePath(mainList->rootIndex())));
+        paste->setEnabled(false);
+    } else if (type == MyPath::Copy)
+        selectedPaths->copyInDir(
+                QString(model->filePath(mainList->rootIndex())));
 }
 
 void MainWindow::pressCut()
 {
-    QModelIndexList temp = mainList->getSelectedIndexes();
-    selectedPaths = new MyPath;
-    selectedPaths->clearPaths();
-    foreach (QModelIndex path, temp)
-        selectedPaths->pushBack(model->filePath(path));
+    if (!mainList->getSelectedIndexes().isEmpty()) {
+        paste->setEnabled(true);
+        type = MyPath::Move;
+        QModelIndexList temp = mainList->getSelectedIndexes();
+        selectedPaths = new MyPath;
+        selectedPaths->clearPaths();
+        foreach (QModelIndex path, temp)
+            selectedPaths->pushBack(model->filePath(path));
+    }
 }
