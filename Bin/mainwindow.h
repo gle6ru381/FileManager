@@ -32,6 +32,7 @@ private:
     QPushButton* paste;
     QPushButton* home;
     QPushButton* cut;
+    QPushButton* remove;
     QTreeView* leftTree;
     MyListView* mainList;
     MyPath* selectedPaths;
@@ -55,5 +56,6 @@ private slots:
     void pressCopy();
     void pressPaste();
     void pressCut();
+    void pressRemove();
 };
 #endif // MAINWINDOW_H

@@ -14,6 +14,7 @@ public:
     void copyInDir(QString&& destination);
     void moveInDir(QString&& destination);
     void pushBack(QString path);
+    void remove();
     void clearPaths();
 };
 

@@ -123,6 +123,13 @@ void MainWindow::createTopBar()
     topBar->addWidget(paste);
     connect(paste, SIGNAL(released()), this, SLOT(pressPaste()));
 
+    remove = new QPushButton(topBar);
+    remove->setIcon(QIcon(QString("%1/pics/edit-delete.png").arg(MAINPATH)));
+    remove->setToolTip(tr("Удалить"));
+    remove->setIconSize(QSize(30, 30));
+    topBar->addWidget(remove);
+    connect(remove, SIGNAL(released()), this, SLOT(pressRemove()));
+
     home = new QPushButton(topBar);
     home->setIcon(QIcon(QString("%1/pics/go-home.png").arg(MAINPATH)));
     home->setToolTip(tr("Домой"));
@@ -215,6 +222,7 @@ void MainWindow::pressPaste()
         selectedPaths->moveInDir(
                 QString(model->filePath(mainList->rootIndex())));
         paste->setEnabled(false);
+        delete selectedPaths;
     } else if (type == MyPath::Copy)
         selectedPaths->copyInDir(
                 QString(model->filePath(mainList->rootIndex())));
@@ -230,5 +238,16 @@ void MainWindow::pressCut()
         selectedPaths->clearPaths();
         foreach (QModelIndex path, temp)
             selectedPaths->pushBack(model->filePath(path));
+    }
+}
+
+void MainWindow::pressRemove()
+{
+    if (!mainList->getSelectedIndexes().isEmpty()) {
+        MyPath myPath;
+        QModelIndexList temp = mainList->getSelectedIndexes();
+        foreach (QModelIndex path, temp)
+            myPath.pushBack(model->filePath(path));
+        myPath.remove();
     }
 }
