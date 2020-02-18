@@ -113,6 +113,7 @@ void MainWindow::createTopBar()
     cut->setText(tr("Вырезать"));
     cut->setIconSize(QSize(30, 30));
     topBar->addWidget(cut);
+    connect(cut, SIGNAL(released()), this, SLOT(pressCut()));
 
     paste = new QPushButton(topBar);
     paste->setIcon(QIcon(QString("%1/pics/edit-paste.png").arg(MAINPATH)));
@@ -205,9 +206,14 @@ void MainWindow::pressCopy()
 
 void MainWindow::pressPaste()
 {
-    selectedPaths->copyInDir(QString(model->filePath(mainList->rootIndex())));
+    selectedPaths->moveInDir(QString(model->filePath(mainList->rootIndex())));
 }
 
 void MainWindow::pressCut()
 {
+    QModelIndexList temp = mainList->getSelectedIndexes();
+    selectedPaths = new MyPath;
+    selectedPaths->clearPaths();
+    foreach (QModelIndex path, temp)
+        selectedPaths->pushBack(model->filePath(path));
 }

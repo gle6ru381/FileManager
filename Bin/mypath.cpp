@@ -25,6 +25,29 @@ void MyPath::copyInDir(QString&& destination)
         }
 }
 
+void MyPath::moveInDir(QString&& destination)
+{
+    copyInDir(std::move(destination));
+    foreach (QString path, paths)
+        if (QFileInfo(path).isDir()) {
+            foreach (
+                    QString entry,
+                    QDir(path).entryList(
+                            QDir::AllDirs | QDir::Files | QDir::Hidden
+                            | QDir::NoDotAndDotDot)) {
+                QFile file(entry);
+                file.setPermissions(
+                        QFileDevice::WriteOther | QFileDevice::ReadOther
+                        | QFileDevice::ExeOther);
+                QString fullName = QString("%1/%2").arg(path).arg(entry);
+                file.remove(fullName);
+            }
+            QDir::rmdir(path);
+        } else if (QFileInfo(path).isFile()) {
+            QFile::remove(path);
+        }
+}
+
 void MyPath::pushBack(QString path)
 {
     paths.push_back(path);
