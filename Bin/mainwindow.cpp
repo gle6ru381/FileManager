@@ -98,6 +98,7 @@ void MainWindow::createTopBar()
     back->setIcon(QIcon(QString("%1/pics/go-previous.png").arg(MAINPATH)));
     back->setToolTip("Назад");
     back->setIconSize(QSize(30, 30));
+    back->setShortcut(QKeySequence(Qt::Key_Escape));
     connect(back, SIGNAL(released()), this, SLOT(pressBack()));
     topBar->addWidget(back);
 
@@ -105,6 +106,7 @@ void MainWindow::createTopBar()
     copy->setIcon(QIcon(QString("%1/pics/edit-copy.png").arg(MAINPATH)));
     copy->setToolTip(tr("Копировать"));
     copy->setIconSize(QSize(30, 30));
+    copy->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_C));
     topBar->addWidget(copy);
     connect(copy, SIGNAL(released()), this, SLOT(pressCopy()));
 
@@ -112,6 +114,7 @@ void MainWindow::createTopBar()
     cut->setIcon(QIcon(QString("%1/pics/edit-cut.png").arg(MAINPATH)));
     cut->setToolTip(tr("Вырезать"));
     cut->setIconSize(QSize(30, 30));
+    cut->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_X));
     topBar->addWidget(cut);
     connect(cut, SIGNAL(released()), this, SLOT(pressCut()));
 
@@ -119,6 +122,7 @@ void MainWindow::createTopBar()
     paste->setIcon(QIcon(QString("%1/pics/edit-paste.png").arg(MAINPATH)));
     paste->setToolTip(tr("Вставить"));
     paste->setIconSize(QSize(30, 30));
+    paste->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_V));
     paste->setEnabled(false);
     topBar->addWidget(paste);
     connect(paste, SIGNAL(released()), this, SLOT(pressPaste()));
