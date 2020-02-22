@@ -4,9 +4,7 @@
 #include "mylistview.h"
 #include "mypath.h"
 #include <QAction>
-#include <QDir>
-#include <QFileSystemModel>
-#include <QListView>
+#include <QLineEdit>
 #include <QMainWindow>
 #include <QMenu>
 #include <QPushButton>
@@ -33,6 +31,7 @@ private:
     QPushButton* home;
     QPushButton* cut;
     QPushButton* remove;
+    QLineEdit* searchLine;
     QTreeView* leftTree;
     MyListView* mainList;
     MyPath* selectedPaths;
@@ -43,6 +42,7 @@ private:
     void createLeftTree();
     void createMainList();
     void createContextMenu();
+    void createSearchLine();
     void fileRun(QString);
 
 private slots:

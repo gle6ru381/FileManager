@@ -1,9 +1,11 @@
 #include "mainwindow.h"
 #include <QCoreApplication>
 #include <QFileIconProvider>
+#include <QHBoxLayout>
 #include <QProcess>
 #include <QString>
 #include <QTableView>
+#include <QVBoxLayout>
 
 #define MAINPATH "D:/reposQt/FileManager"
 
@@ -16,12 +18,18 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent)
 
     createLeftTree();
     createMainList();
+    createSearchLine();
     createTopBar();
     createLeftBar();
     createContextMenu();
 
     setCentralWidget(mainList);
     setGeometry(0, 30, 800, 800);
+}
+
+void MainWindow::createSearchLine()
+{
+    searchLine = new QLineEdit(this);
 }
 
 void MainWindow::createLeftTree()
@@ -50,6 +58,7 @@ void MainWindow::createMainList()
     mainList->setWordWrap(true);
     mainList->setResizeMode(QListView::Adjust);
     mainList->setIconSize(QSize(80, 70));
+    mainList->setUniformItemSizes(true);
     mainList->setEditTriggers(QAbstractItemView::SelectedClicked);
     mainList->setSelectionMode(QAbstractItemView::ExtendedSelection);
     connect(mainList,
@@ -88,6 +97,9 @@ void MainWindow::viewMenu()
 
 void MainWindow::createTopBar()
 {
+    QVBoxLayout* layout = new QVBoxLayout(this);
+    layout->setSpacing(0);
+
     topBar = new QToolBar(this);
     topBar->setAllowedAreas(Qt::TopToolBarArea);
     topBar->setMovable(false);
@@ -141,7 +153,19 @@ void MainWindow::createTopBar()
     connect(home, SIGNAL(released()), this, SLOT(pressHome()));
     topBar->addWidget(home);
 
+    QToolBar* secondBar = new QToolBar(this);
+    secondBar->setMovable(false);
+    secondBar->setFloatable(false);
+    secondBar->addWidget(searchLine);
+
+    layout->addWidget(topBar);
+    layout->addWidget(secondBar);
+    topBar->setLayout(layout);
+    secondBar->setLayout(layout);
+
+    setLayout(layout);
     addToolBar(Qt::TopToolBarArea, topBar);
+    addToolBar(Qt::TopToolBarArea, secondBar);
 }
 
 void MainWindow::createLeftBar()
